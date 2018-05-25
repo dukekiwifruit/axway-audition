@@ -7,7 +7,7 @@ export function postSession(email, password) {
     body: JSON.stringify({ email, password })
   };
 
-  return fetch('/api/sessions', options)
+  return fetch('/api/login', options)
     .then(parseJSON);
 }
 
