@@ -8,6 +8,7 @@ import Split from 'grommet/components/Split';
 import NavSidebar from './NavSidebar';
 import { navResponsive } from '../actions/nav';
 
+import Create from '../screens/Create';
 import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
 import Tasks from '../screens/Tasks';
@@ -41,10 +42,10 @@ class Main extends Component {
           <Split
             priority={priority}
             flex='right'
-            onResponsive={this._onResponsive}
-          >
+            onResponsive={this._onResponsive} >
             {nav}
             <Switch>
+              <Route path='/create' component={Create} />
               <Route exact={true} path='/' component={Dashboard} />
               <Route path='/dashboard' component={Dashboard} />
               <Route path='/login' component={Login} />
