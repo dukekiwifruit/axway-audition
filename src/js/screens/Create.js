@@ -87,13 +87,13 @@ class Dashboard extends Component {
           <Form>
             <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
-              <FormField label={getMessage(intl, 'Maximum 60 Characters')}>
+              <FormField label={getMessage(intl, 'This is your survey question. Maximum 60 Characters.')}>
                 <TextInput id='title' name='title' onDOMChange={e => this.onTextChange('title', e.target.value)} />
               </FormField>
             </Box>
             <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
-              <FormField label={getMessage(intl, 'Maximum 200 Characters')}>
+              <FormField label={getMessage(intl, 'Tell us a little bit more about the question. Maximum 200 Characters.')}>
                 <TextInput id='description' name='description' onDOMChange={e => this.onTextChange('description', e.target.value)} />
               </FormField>
             </Box>
