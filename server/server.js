@@ -8,7 +8,6 @@ import path from 'path';
 import api from './api';
 import { addNotifier, getTasks, getTask } from './data';
 import Notifier from './notifier';
-import login from './login';
 
 const PORT = process.env.PORT || 8102;
 
@@ -46,7 +45,6 @@ const app = express()
 
 // REST API
 app.use('/api', api);
-app.use('/login', login);
 
 // UI
 app.use('/', express.static(path.join(__dirname, '/../dist')));

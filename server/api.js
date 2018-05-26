@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  connection.query(`SELECT password FROM users WHERE email = '${email}';`, (dberr, dbres) => {
+  connection.query('SELECT password FROM users WHERE email = ?;', [email], (dberr, dbres) => {
     if (dberr) {
       res.statusMessage = 'Unknown error while validating login.';
       res.status(500).end();
@@ -35,6 +35,22 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.post('/survey', (req, res) => {
+  const survey = res.body;
+  connection.query(
+    'INSERT INTO surveys (user_id, title, description, is_demographic) VALUES (?, ?, ?, ?);',
+    [survey.userId, survey.title, survey.description, survey.isDemographic],
+    (dberr) => {
+      if (dberr) {
+        console.log(dberr);
+        res.status(500).end();
+        throw dberr;
+      }
+      res.status(204).end();
+    }
+  );
+});
+
 router.get('/task', (req, res) => {
   getTasks(req.query).then(tasks => res.json(tasks));
 });
@@ -47,10 +63,6 @@ router.get('/task/:id', (req, res) => {
       res.json(result);
     }
   });
-});
-
-router.delete('/login/*', (req, res) => {
-  res.json(undefined);
 });
 
 module.exports = router;
