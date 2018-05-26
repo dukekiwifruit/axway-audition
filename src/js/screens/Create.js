@@ -11,6 +11,7 @@ import Label from 'grommet/components/Label';
 import Notification from 'grommet/components/Notification';
 import Paragraph from 'grommet/components/Paragraph';
 import SaveIcon from 'grommet/components/icons/base/Save';
+import FormField from 'grommet/components/FormField';
 import TextInput from 'grommet/components/TextInput';
 import { getMessage } from 'grommet/utils/Intl';
 import NavControl from '../components/NavControl';
@@ -19,11 +20,15 @@ import { pageLoaded } from './utils';
 class Dashboard extends Component {
   constructor() {
     super();
-    this._onSubmit = this._onSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     pageLoaded('Create');
+  }
+
+  onSubmit() {
+    console.log('nanananan')
   }
 
   render() {
@@ -61,21 +66,28 @@ class Dashboard extends Component {
           </Paragraph>
         </Box>
         <Box pad='medium'>
-          {/* <Form> */}
-            <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
-            <small>{getMessage(intl, 'Maximum 200 Characters')}</small>
-            <TextInput id='title' name='title' />
-            <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
-            <small>{getMessage(intl, 'Maximum 200 Characters')}</small>
-            <TextInput id='description' name='description' />
-            <Box pad={{ vertical: 'medium', horizontal: 'none' }}>
+          <Form>
+            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
+              <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
+              <FormField label={getMessage(intl, 'Maximum 60 Characters')}>
+                <TextInput id='title' name='title' />
+              </FormField>
+            </Box>
+            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
+              <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
+              <FormField label={getMessage(intl, 'Maximum 200 Characters')}>
+                <TextInput id='description' name='description' />
+              </FormField>
+            </Box>
+            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Button
                 primary={true}
                 icon={<SaveIcon />}
+                onClick={this.onSubmit}
                 label={getMessage(intl, 'Save')}
                 href='#' />
             </Box>
-          {/* </Form> */}
+          </Form>
         </Box>
       </Article>
     );
