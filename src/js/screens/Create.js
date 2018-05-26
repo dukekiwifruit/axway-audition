@@ -18,7 +18,7 @@ import NavControl from '../components/NavControl';
 import { pageLoaded } from './utils';
 import { headers } from '../api/utils';
 
-class Dashboard extends Component {
+class Create extends Component {
   constructor() {
     super();
 
@@ -112,16 +112,16 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.defaultProps = {
+Create.defaultProps = {
   error: undefined
 };
 
-Dashboard.propTypes = {
+Create.propTypes = {
   error: PropTypes.object,
   session: PropTypes.object.isRequired
 };
 
-Dashboard.contextTypes = {
+Create.contextTypes = {
   intl: PropTypes.object
 };
 
@@ -129,4 +129,4 @@ const select = state => ({
   session: state.session
 });
 
-export default connect(select)(Dashboard);
+export default connect(select)(Create);
