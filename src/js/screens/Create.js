@@ -16,19 +16,37 @@ import TextInput from 'grommet/components/TextInput';
 import { getMessage } from 'grommet/utils/Intl';
 import NavControl from '../components/NavControl';
 import { pageLoaded } from './utils';
+import { headers } from '../api/utils';
 
 class Dashboard extends Component {
   constructor() {
     super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
 
+    this.state = {
+      title: '',
+      description: ''
+    };
+  }
   componentDidMount() {
     pageLoaded('Create');
   }
 
   onSubmit() {
-    console.log('nanananan')
+    const payload = this.state;
+    payload.email = this.props.session.email;
+    const options = {
+      headers: headers(),
+      method: 'POST',
+      body: JSON.stringify(payload)
+    };
+
+    fetch('/api/survey', options);
+  }
+
+  onTextChange(key, value) {
+    const newState = this.state;
+    newState[key] = value;
+    this.setState(newState);
   }
 
   render() {
@@ -70,20 +88,20 @@ class Dashboard extends Component {
             <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
               <FormField label={getMessage(intl, 'Maximum 60 Characters')}>
-                <TextInput id='title' name='title' />
+                <TextInput id='title' name='title' onDOMChange={e => this.onTextChange('title', e.target.value)} />
               </FormField>
             </Box>
             <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
               <FormField label={getMessage(intl, 'Maximum 200 Characters')}>
-                <TextInput id='description' name='description' />
+                <TextInput id='description' name='description' onDOMChange={e => this.onTextChange('description', e.target.value)} />
               </FormField>
             </Box>
             <Box pad={{ vertical: 'small', horizontal: 'none' }}>
               <Button
                 primary={true}
                 icon={<SaveIcon />}
-                onClick={this.onSubmit}
+                onClick={() => this.onSubmit()}
                 label={getMessage(intl, 'Save')}
                 href='#' />
             </Box>
@@ -99,13 +117,16 @@ Dashboard.defaultProps = {
 };
 
 Dashboard.propTypes = {
-  error: PropTypes.object
+  error: PropTypes.object,
+  session: PropTypes.object.isRequired
 };
 
 Dashboard.contextTypes = {
   intl: PropTypes.object
 };
 
-const select = state => ({ ...state.dashboard });
+const select = state => ({
+  session: state.session
+});
 
 export default connect(select)(Dashboard);

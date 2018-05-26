@@ -36,10 +36,11 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/survey', (req, res) => {
-  const survey = res.body;
+  const survey = req.body;
+
   connection.query(
-    'INSERT INTO surveys (user_id, title, description, is_demographic) VALUES (?, ?, ?, ?);',
-    [survey.userId, survey.title, survey.description, survey.isDemographic],
+    'INSERT INTO surveys (user_id, title, description) VALUES ((SELECT user_id FROM users WHERE email = ?), ?, ?);',
+    [survey.email, survey.title, survey.description],
     (dberr) => {
       if (dberr) {
         console.log(dberr);
