@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { processStatus } from 'grommet/utils/Rest';
 
 import Article from 'grommet/components/Article';
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
-import Form from 'grommet/components/Form';
 import Header from 'grommet/components/Header';
 import Heading from 'grommet/components/Heading';
 import Label from 'grommet/components/Label';
@@ -24,15 +24,19 @@ class Create extends Component {
 
     this.state = {
       title: '',
-      description: ''
+      description: '',
+      error: '',
+      notification: ''
     };
   }
+
   componentDidMount() {
     pageLoaded('Create');
   }
 
   onSubmit() {
     const payload = this.state;
+    const me = this;
     payload.email = this.props.session.email;
     const options = {
       headers: headers(),
@@ -40,7 +44,17 @@ class Create extends Component {
       body: JSON.stringify(payload)
     };
 
-    fetch('/api/survey', options);
+    fetch('/api/survey', options)
+      .then(processStatus)
+      .then(() => {
+        me.setState({
+          title: '',
+          description: '',
+          error: '',
+          notification: `Your survey, '${me.state.title}', was created successfully.`
+        });
+      })
+      .catch(error => this.setState({ error }));
   }
 
   onTextChange(key, value) {
@@ -50,17 +64,27 @@ class Create extends Component {
   }
 
   render() {
-    const { error } = this.props;
     const { intl } = this.context;
+    const state = this.state;
 
-    let errorNode;
-    if (error) {
-      errorNode = (
+    let notificationNode;
+
+    if (state.error) {
+      notificationNode = (
         <Notification
           status='critical'
           size='large'
-          state={error.message}
-          message='An unexpected error happened, please try again later'
+          state={state.error.message}
+          message='An unexpected error happened, please try again later.'
+        />
+      );
+    } else if (state.notification) {
+      notificationNode = (
+        <Notification
+          status='ok'
+          size='large'
+          state={state.notification}
+          message='Success!'
         />
       );
     }
@@ -74,7 +98,7 @@ class Create extends Component {
           pad={{ horizontal: 'medium', between: 'small' }} >
           <NavControl />
         </Header>
-        {errorNode}
+        {notificationNode}
         <Box pad='medium'>
           <Heading tag='h3' strong={true}>
             {getMessage(intl, 'Create Survey')}
@@ -84,28 +108,26 @@ class Create extends Component {
           </Paragraph>
         </Box>
         <Box pad='medium'>
-          <Form>
-            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
-              <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
-              <FormField label={getMessage(intl, 'This is your survey question. Maximum 60 Characters.')}>
-                <TextInput id='title' name='title' onDOMChange={e => this.onTextChange('title', e.target.value)} />
-              </FormField>
-            </Box>
-            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
-              <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
-              <FormField label={getMessage(intl, 'Tell us a little bit more about the question. Maximum 200 Characters.')}>
-                <TextInput id='description' name='description' onDOMChange={e => this.onTextChange('description', e.target.value)} />
-              </FormField>
-            </Box>
-            <Box pad={{ vertical: 'small', horizontal: 'none' }}>
-              <Button
-                primary={true}
-                icon={<SaveIcon />}
-                onClick={() => this.onSubmit()}
-                label={getMessage(intl, 'Save')}
-                href='#' />
-            </Box>
-          </Form>
+          <Box pad={{ vertical: 'small', horizontal: 'none' }}>
+            <Label labelFor='title'>{getMessage(intl, 'Survey Title')}</Label>
+            <FormField label={getMessage(intl, 'This is the yes or no question your survey is asking. Maximum 60 Characters.')}>
+              <TextInput id='title' name='title' onDOMChange={e => this.onTextChange('title', e.target.value)} />
+            </FormField>
+          </Box>
+          <Box pad={{ vertical: 'small', horizontal: 'none' }}>
+            <Label labelFor='description'>{getMessage(intl, 'Survey Description')}</Label>
+            <FormField label={getMessage(intl, 'Tell us a little bit more about the question. Maximum 200 Characters.')}>
+              <TextInput id='description' name='description' onDOMChange={e => this.onTextChange('description', e.target.value)} />
+            </FormField>
+          </Box>
+          <Box pad={{ vertical: 'small', horizontal: 'none' }}>
+            <Button
+              primary={true}
+              icon={<SaveIcon />}
+              onClick={() => this.onSubmit()}
+              label={getMessage(intl, 'Save')}
+              href='#' />
+          </Box>
         </Box>
       </Article>
     );
