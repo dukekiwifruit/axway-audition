@@ -34,6 +34,10 @@ class Create extends Component {
     pageLoaded('Create');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(unloadDashboard());
+  }
+
   onSubmit() {
     const payload = this.state;
     const me = this;
@@ -134,12 +138,7 @@ class Create extends Component {
   }
 }
 
-Create.defaultProps = {
-  error: undefined
-};
-
 Create.propTypes = {
-  error: PropTypes.object,
   session: PropTypes.object.isRequired
 };
 

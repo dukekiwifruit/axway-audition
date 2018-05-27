@@ -45,8 +45,8 @@ class Main extends Component {
             onResponsive={this._onResponsive} >
             {nav}
             <Switch>
-              <Route path='/create' component={Create} />
               <Route exact={true} path='/' component={Dashboard} />
+              <Route path='/create' component={Create} />
               <Route path='/dashboard' component={Dashboard} />
               <Route path='/login' component={Login} />
               <Route path='/tasks/:id' component={Task} />

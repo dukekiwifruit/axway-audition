@@ -11,6 +11,7 @@ const initialState = {
   enabled: true, // start with nav disabled
   responsive: 'multiple',
   items: [
+    { path: '/create', label: 'Create' },
     { path: '/dashboard', label: 'Dashboard' },
     { path: '/tasks', label: 'Tasks' }
   ]
