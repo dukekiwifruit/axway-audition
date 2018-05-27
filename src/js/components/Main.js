@@ -12,6 +12,7 @@ import Create from '../screens/Create';
 import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
 import Tasks from '../screens/Tasks';
+import Surveys from '../screens/Surveys';
 import Task from '../screens/Task';
 import NotFound from '../screens/NotFound';
 
@@ -50,6 +51,7 @@ class Main extends Component {
               <Route path='/dashboard' component={Dashboard} />
               <Route path='/login' component={Login} />
               <Route path='/tasks/:id' component={Task} />
+              <Route path='/surveys' component={Surveys} />
               <Route path='/tasks' component={Tasks} />
               <Route path='/*' component={NotFound} />
             </Switch>

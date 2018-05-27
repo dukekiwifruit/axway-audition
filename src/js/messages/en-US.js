@@ -1,16 +1,18 @@
 module.exports = {
   Bar: 'Bar',
-  close: 'close',
+  close: 'Close',
+  Close: 'Close',
   Grommet: 'Grommet',
   Max: 'Max',
   Meter: 'Meter',
   Menu: 'Menu',
   Open: 'Open',
   Spinning: 'Spinning',
+  Surveys: 'Surveys',
   Tasks: 'Tasks',
   Threshold: 'Threshold',
   Title: 'Title',
-  user: 'user',
+  user: 'User',
+  User: 'User',
   Value: 'Value',
-
 };

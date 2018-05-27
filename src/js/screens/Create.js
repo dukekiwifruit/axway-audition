@@ -34,10 +34,6 @@ class Create extends Component {
     pageLoaded('Create');
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(unloadDashboard());
-  }
-
   onSubmit() {
     const payload = this.state;
     const me = this;
@@ -48,7 +44,7 @@ class Create extends Component {
       body: JSON.stringify(payload)
     };
 
-    fetch('/api/survey', options)
+    fetch('/api/create', options)
       .then(processStatus)
       .then(() => {
         me.setState({

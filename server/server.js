@@ -14,12 +14,12 @@ const PORT = process.env.PORT || 8102;
 const notifier = new Notifier();
 
 addNotifier(
-  'task',
-  (task) => {
+  'survey',
+  (survey) => {
     // this can be invoked multiple times as new requests happen
     notifier.test((request) => {
       // we should skip notify if the id of the task does not match the payload
-      if (request.path === '/api/task/:id' && request.params.id !== task.id) {
+      if (request.path === '/api/task/:id' && request.params.id !== survey.id) {
         return false;
       }
       return true;
@@ -27,7 +27,15 @@ addNotifier(
   }
 );
 
-notifier.use('/api/task', () => getTasks());
+notifier.use('/api/survey', () => getTasks());
+notifier.use('/api/survey/:id', param => (
+  getSurvey(param.id).then((result) => {
+    if (!result.task) {
+      return Promise.reject({ statusCode: 404, message: 'Not Found' });
+    }
+    return Promise.resolve(result);
+  })
+));
 notifier.use('/api/task/:id', param => (
   getTask(param.id).then((result) => {
     if (!result.task) {

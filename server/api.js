@@ -35,7 +35,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.post('/survey', (req, res) => {
+router.post('/create', (req, res) => {
   const survey = req.body;
 
   connection.query(

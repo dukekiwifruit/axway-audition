@@ -12,6 +12,7 @@ const initialState = {
   responsive: 'multiple',
   items: [
     { path: '/create', label: 'Create' },
+    { path: '/surveys', label: 'Surveys' },
     { path: '/dashboard', label: 'Dashboard' },
     { path: '/tasks', label: 'Tasks' }
   ]
